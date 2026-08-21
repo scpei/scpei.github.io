@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 5 — Multimodal Knowledge Director</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="deck-stage-day5.js"></script>
+  <style>
+    :root{--paper:#F2EEDF;--paper2:#ECE6D2;--ink:#241F18;--soft:#463E33;--pink:#E1A4C2;--lemon:#D6DD63;--blush:#E8C9B6;--sage:#B7C7A8;--lilac:#C9BEDC;--blue:#AFCAD7;--white:#FAF7EC;--rule:rgba(36,31,24,.2)}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:#171717}body{font-family:'Work Sans',sans-serif;color:var(--ink)}deck-stage{background:#171717}
+    section.slide{position:relative;overflow:hidden;background:var(--paper);color:var(--ink)}h1,h2,h3,p{margin:0}.notes{display:none}
+    .eyebrow{position:absolute;top:58px;left:80px;font-size:27px}.page{position:absolute;top:58px;right:80px;font:italic 27px 'Cormorant Garamond',serif;color:var(--soft)}
+    .footer{position:absolute;left:80px;right:80px;bottom:45px;display:flex;justify-content:space-between;font:italic 24px 'Cormorant Garamond',serif;color:var(--soft)}
+    .kicker{font:italic 30px 'Cormorant Garamond',serif;color:var(--soft)}
+    .head{position:absolute;left:80px;right:80px;top:128px;display:flex;justify-content:space-between;align-items:flex-end}.head h2{font:500 82px/.96 'Cormorant Garamond',serif;max-width:1120px}.head>p{width:570px;font-size:23px;line-height:1.43;color:var(--soft)}
+    .pink{background:var(--pink)}.lemon{background:var(--lemon)}.blush{background:var(--blush)}.sage{background:var(--sage)}.lilac{background:var(--lilac)}.blue{background:var(--blue)}
+
+    /* Cover */
+    .cover{background:var(--paper)}.cover::after{content:"";position:absolute;width:760px;height:760px;right:-140px;top:-280px;border-radius:50%;background:var(--sage);opacity:.48}
+    .cover-top{position:absolute;left:80px;top:58px;font-size:27px}.swatches{position:absolute;right:80px;top:78px;display:flex;gap:14px;z-index:2}.swatches i{width:52px;height:52px;border-radius:50%;background:var(--pink)}.swatches i:nth-child(2){background:var(--lemon)}.swatches i:nth-child(3){background:var(--sage)}
+    .cover-copy{position:absolute;left:80px;top:205px;width:1180px}.cover-copy .kicker{font-size:38px}.cover h1{font:500 154px/.88 'Cormorant Garamond',serif;letter-spacing:-.025em;margin:26px 0 32px}.cover-copy p{font-size:27px;line-height:1.48;max-width:930px;color:var(--soft)}
+    .cover-orbits{position:absolute;right:100px;top:220px;width:600px;height:600px;z-index:1}.orbit{position:absolute;width:238px;height:238px;border-radius:48% 52% 46% 54%;display:grid;place-items:center;font:600 38px 'Cormorant Garamond',serif;box-shadow:0 18px 32px rgba(36,31,24,.1)}.o1{left:0;top:0;background:var(--pink);transform:rotate(-8deg)}.o2{right:5px;top:40px;background:var(--lemon);transform:rotate(6deg)}.o3{left:60px;bottom:0;background:var(--blue);transform:rotate(4deg)}.o4{right:15px;bottom:8px;background:var(--lilac);transform:rotate(-5deg)}
+    .instructor{position:absolute;right:80px;bottom:105px;width:560px;padding:18px 20px 16px;border:1px solid rgba(36,31,24,.16);border-radius:20px;background:rgba(250,247,236,.88);text-align:right;display:flex;flex-direction:column;gap:4px;z-index:2}.instructor strong{font:600 35px 'Cormorant Garamond',serif}.instructor span{font-size:19px;color:var(--soft)}
+
+    /* Challenge */
+    .challenge-grid{position:absolute;left:80px;right:80px;top:340px;bottom:132px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px}
+    .challenge-list{display:grid;gap:18px}.challenge-row{display:grid;grid-template-columns:94px 1fr;align-items:center;border-radius:30px;padding:25px 32px}.challenge-row b{font:italic 47px 'Cormorant Garamond',serif}.challenge-row h3{font:500 39px 'Cormorant Garamond',serif}.challenge-row p{font-size:20px;line-height:1.4;color:var(--soft);margin-top:5px}
+    .output-card{border-radius:42px;background:var(--ink);color:var(--paper);padding:58px;display:flex;flex-direction:column;justify-content:space-between}.output-card .label{font-size:20px;letter-spacing:.18em}.output-card strong{font:500 100px/.88 'Cormorant Garamond',serif}.output-card p{font-size:25px;line-height:1.45;color:var(--paper2)}
+
+    /* Topic focus */
+    .brainstorm-grid{position:absolute;left:80px;right:80px;top:355px;bottom:150px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.brainstorm-card{border-radius:38px;padding:42px;display:flex;flex-direction:column;justify-content:space-between}.brainstorm-card .n{font:italic 50px 'Cormorant Garamond',serif}.brainstorm-card h3{font:500 62px/1 'Cormorant Garamond',serif;margin-bottom:20px}.brainstorm-card p{font-size:22px;line-height:1.45;color:var(--soft)}
+    .focus-prompt{position:absolute;left:260px;right:260px;bottom:105px;text-align:center;font:500 29px 'Cormorant Garamond',serif}
+
+    /* Multimodal requirement */
+    .media{background:var(--blush)}.media-copy{position:absolute;left:105px;right:105px;top:130px;text-align:center}.media-copy h2{font:500 105px/.92 'Cormorant Garamond',serif;letter-spacing:-.02em;margin:18px auto 22px}.media-copy>p{font-size:26px;line-height:1.45;max-width:1100px;margin:auto}
+    .media-grid{position:absolute;left:180px;right:180px;top:505px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.media-card{border-radius:34px;background:rgba(250,247,236,.68);padding:30px 34px}.media-card .n{font:italic 36px 'Cormorant Garamond',serif}.media-card h3{font:500 48px 'Cormorant Garamond',serif;margin:8px 0 10px}.media-card p{font-size:19px;line-height:1.4;color:var(--soft)}
+    .media-rule{position:absolute;left:390px;right:390px;bottom:112px;border-top:1px solid var(--ink);padding-top:18px;text-align:center;font:500 31px 'Cormorant Garamond',serif}
+
+    /* Workflow */
+    .flow-row{position:absolute;left:80px;right:80px;top:365px;bottom:170px;display:flex;align-items:stretch;gap:13px}.flow-step{flex:1;border-radius:30px;padding:30px 27px;display:flex;flex-direction:column;justify-content:space-between}.flow-step .n{font:italic 48px 'Cormorant Garamond',serif}.flow-step h3{font:500 38px/1 'Cormorant Garamond',serif;margin-bottom:13px}.flow-step p{font-size:19px;line-height:1.38;color:var(--soft)}.flow-arrow{display:flex;align-items:center;font-size:38px}
+    .workflow-note{position:absolute;left:80px;right:80px;bottom:116px;text-align:center;font:500 29px 'Cormorant Garamond',serif}
+
+    /* Tools */
+    .tools-grid{position:absolute;left:80px;right:80px;top:345px;bottom:132px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.tool-card{border-radius:38px;padding:42px;display:flex;flex-direction:column;justify-content:space-between}.tool-card .tool-num{font:italic 56px 'Cormorant Garamond',serif}.tool-card h3{font:500 58px/1 'Cormorant Garamond',serif;margin-bottom:18px}.tool-card p{font-size:21px;line-height:1.45;color:var(--soft)}.tool-card small{display:block;margin-top:28px;padding-top:18px;border-top:1px solid var(--rule);font-size:17px;line-height:1.4}
+
+    /* Schedule */
+    .schedule-grid{position:absolute;left:80px;right:80px;top:325px;bottom:130px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px}.time-card{border-radius:31px;padding:29px;display:flex;flex-direction:column;justify-content:flex-end}.time-card b{font:italic 35px 'Cormorant Garamond',serif}.time-card h3{font:500 34px 'Cormorant Garamond',serif;margin:9px 0 4px}.time-card p{font-size:17px;line-height:1.35;color:var(--soft)}
+
+    /* Success */
+    .success{background:var(--sage)}.success-copy{position:absolute;left:115px;right:115px;top:135px;text-align:center}.success-copy h2{font:500 108px/.93 'Cormorant Garamond',serif;letter-spacing:-.02em;margin:18px auto 24px}.success-copy>p{font-size:26px;line-height:1.45;max-width:1080px;margin:auto}
+    .standards{position:absolute;left:180px;right:180px;top:510px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.standard{border-radius:34px;background:rgba(250,247,236,.68);padding:32px 36px}.standard .n{font:italic 38px 'Cormorant Garamond',serif}.standard h3{font:500 43px 'Cormorant Garamond',serif;margin:10px 0 12px}.standard p{font-size:20px;line-height:1.42;color:var(--soft)}
+    .final-line{position:absolute;left:300px;right:300px;bottom:125px;text-align:center;font:500 32px 'Cormorant Garamond',serif;border-top:1px solid var(--ink);padding-top:20px}
+  </style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <section class="slide cover" data-label="01 Multimodal Knowledge Director">
+    <div class="cover-top">Summer Camp · AI Foundations · Day 5</div>
+    <div class="swatches"><i></i><i></i><i></i></div>
+    <div class="cover-copy"><div class="kicker">Day 5 · Capstone Project</div><h1>Multimodal<br>Knowledge Director</h1><p>Choose a focused academic topic, research it carefully, and combine images, video, and audio into a clear twenty-minute presentation.</p></div>
+    <div class="cover-orbits" aria-hidden="true"><div class="orbit o1">Ask</div><div class="orbit o2">Research</div><div class="orbit o3">Create</div><div class="orbit o4">Share</div></div>
+    <div class="instructor"><strong>Shichao Pei</strong><span>Assistant Professor, Computer Science</span><span>UMass Boston</span></div>
+    <div class="footer"><span>Summer 2026</span><span>01 / 08</span></div>
+    <aside class="notes">[Sources]
+- Project direction supplied directly by the course instructor.
+- Visual composition uses original CSS shapes created for this course deck.</aside>
+  </section>
+
+  <section class="slide" data-label="02 The capstone challenge">
+    <div class="eyebrow">The capstone challenge</div><div class="page">02 / 08</div>
+    <div class="head"><h2>Turn one question into a twenty-minute explanation.</h2><p>You are the director: decide what matters, which evidence to trust, and how your audience should experience the idea.</p></div>
+    <div class="challenge-grid">
+      <div class="challenge-list">
+        <article class="challenge-row pink"><b>01</b><div><h3>Choose</h3><p>Begin with a topic you genuinely want to understand.</p></div></article>
+        <article class="challenge-row lemon"><b>02</b><div><h3>Research</h3><p>Find evidence, verify claims, and identify the core idea.</p></div></article>
+        <article class="challenge-row sage"><b>03</b><div><h3>Direct</h3><p>Shape a clear story and present it in your own way.</p></div></article>
+      </div>
+      <article class="output-card"><span class="label">FINAL OUTPUT</span><strong>20<br>minutes</strong><p>A live multimodal presentation combining images, video, audio, text, and your own narration.</p></article>
+    </div>
+    <div class="footer"><span>Day 5 · Capstone Project</span><span>Summer Camp · AI Foundations</span></div>
+    <aside class="notes">[Sources]
+- Twenty-minute presentation length and required multimodal format supplied directly by the course instructor.</aside>
+  </section>
+
+  <section class="slide" data-label="03 Brainstorm a focused topic">
+    <div class="eyebrow">Choose your direction</div><div class="page">03 / 08</div>
+    <div class="head"><h2>Brainstorm first. Then focus.</h2><p>Start inside an academic field, follow your own curiosity, and narrow the topic until one central question can guide the presentation.</p></div>
+    <div class="brainstorm-grid">
+      <article class="brainstorm-card sage"><div class="n">01</div><div><h3>Science</h3><p>What question or idea do you genuinely want to understand?</p></div></article>
+      <article class="brainstorm-card pink"><div class="n">02</div><div><h3>Literature</h3><p>What interpretation or connection do you want your audience to consider?</p></div></article>
+      <article class="brainstorm-card lemon"><div class="n">03</div><div><h3>History</h3><p>What change, cause, or consequence do you want to explain?</p></div></article>
+    </div>
+    <div class="focus-prompt">Your topic should be focused enough to explain clearly in twenty minutes.</div>
+    <div class="footer"><span>Day 5 · Multimodal Knowledge Director</span><span>Summer Camp · AI Foundations</span></div>
+    <aside class="notes">[Sources]
+- Academic directions and open brainstorming approach supplied directly by the course instructor.
+- No specific topic examples are shown so students generate their own ideas.</aside>
+  </section>
+
+  <section class="slide media" data-label="04 Required multimodal combination">
+    <div class="eyebrow">Your final project</div><div class="page">04 / 08</div>
+    <div class="media-copy"><div class="kicker">One coordinated experience</div><h2>Images, video, and audio work together.</h2><p>Your presentation should combine all three media types with slides, text, and live narration. Each medium should contribute something meaningful.</p></div>
+    <div class="media-grid">
+      <article class="media-card"><div class="n">01</div><h3>Images</h3><p>Make concepts, evidence, people, places, or relationships visible.</p></article>
+      <article class="media-card"><div class="n">02</div><h3>Video</h3><p>Show movement, change, process, context, or a short scene.</p></article>
+      <article class="media-card"><div class="n">03</div><h3>Audio</h3><p>Add narration, voice, sound, or another listening experience.</p></article>
+    </div>
+    <div class="media-rule">One focused topic · twenty minutes · one coherent story</div>
+    <div class="footer"><span>Day 5 · Capstone Project</span><span>Multimodal by design</span></div>
+    <aside class="notes">[Sources]
+- Required combination of images, video, and audio supplied directly by the course instructor.</aside>
+  </section>
+
+  <section class="slide" data-label="05 Production pathway">
+    <div class="eyebrow">Your production pathway</div><div class="page">05 / 08</div>
+    <div class="head"><h2>Research first. Generate second.</h2><p>Complete the thinking before polishing the media. The clearest story wins—not the largest collection of AI outputs.</p></div>
+    <div class="flow-row">
+      <article class="flow-step pink"><div class="n">01</div><div><h3>Question</h3><p>Choose one focused idea.</p></div></article><div class="flow-arrow">→</div>
+      <article class="flow-step lemon"><div class="n">02</div><div><h3>Research</h3><p>Collect and verify evidence.</p></div></article><div class="flow-arrow">→</div>
+      <article class="flow-step sage"><div class="n">03</div><div><h3>Story</h3><p>Arrange the explanation.</p></div></article><div class="flow-arrow">→</div>
+      <article class="flow-step lilac"><div class="n">04</div><div><h3>Create</h3><p>Make useful media.</p></div></article><div class="flow-arrow">→</div>
+      <article class="flow-step blush"><div class="n">05</div><div><h3>Present</h3><p>Rehearse and teach live.</p></div></article>
+    </div>
+    <div class="workflow-note">Question → evidence → story → media → explanation</div>
+    <div class="footer"><span>Day 5 · Project Workflow</span><span>Summer Camp · AI Foundations</span></div>
+    <aside class="notes">[Sources]
+- Workflow synthesized from the instructor-approved capstone plan.</aside>
+  </section>
+
+  <section class="slide" data-label="06 Tools are options">
+    <div class="eyebrow">Possible project tools</div><div class="page">06 / 08</div>
+    <div class="head"><h2>Choose the right tool for each task.</h2><p>Use these tools to research, organize, and create the images, video, and audio needed for your presentation.</p></div>
+    <div class="tools-grid">
+      <article class="tool-card sage"><div class="tool-num">01</div><div><h3>NotebookLM</h3><p>Work from uploaded sources, ask grounded questions, and explore audio overviews.</p><small>Useful for research and organizing evidence.</small></div></article>
+      <article class="tool-card pink"><div class="tool-num">02</div><div><h3>Gemini</h3><p>Develop questions, refine explanations, plan slides, and generate supporting images.</p><small>Useful for thinking, drafting, and visual exploration.</small></div></article>
+      <article class="tool-card lemon"><div class="tool-num">03</div><div><h3>HF Spaces</h3><p>Try selected community demos for images, audio, video, or other creative experiments.</p><small>Useful for exploring specialized models.</small></div></article>
+    </div>
+    <div class="footer"><span>Day 5 · Tools for the Project</span><span>Choose what helps</span></div>
+    <aside class="notes">[Sources]
+- NotebookLM Help: https://support.google.com/notebooklm/
+- Gemini Apps Help: https://support.google.com/gemini/
+- Hugging Face Spaces: https://huggingface.co/spaces</aside>
+  </section>
+
+  <section class="slide" data-label="07 Friday schedule">
+    <div class="eyebrow">Day 5 · Project day</div><div class="page">07 / 08</div>
+    <div class="head"><h2>Review, research, build, rehearse, and present.</h2><p>Finish the story before polishing the media. Each block moves the project toward a presentation-ready version.</p></div>
+    <div class="schedule-grid">
+      <article class="time-card pink"><b>9:00–10:00</b><h3>Review + Project Intro</h3><p>Key techniques from Days 1–4 and today’s challenge.</p></article>
+      <article class="time-card blue"><b>10:00–10:30</b><h3>Assistant Experiences</h3><p>Two assistants share for 15 minutes each.</p></article>
+      <article class="time-card sage"><b>10:30–12:00</b><h3>Topic + Research</h3><p>Brainstorm, collect sources, and plan the structure.</p></article>
+      <article class="time-card lemon"><b>12:00–1:00</b><h3>Lunch</h3><p>Pause and reset.</p></article>
+      <article class="time-card lilac"><b>1:00–2:30</b><h3>Create Media</h3><p>Prepare images, video, and audio.</p></article>
+      <article class="time-card blush"><b>2:30–3:00</b><h3>Prepare</h3><p>Assemble, test, and rehearse the presentation.</p></article>
+      <article class="time-card blue"><b>3:00–4:20</b><h3>Presentations</h3><p>Each student presents for twenty minutes.</p></article>
+      <article class="time-card pink"><b>4:20–4:30</b><h3>Summary + Certificates</h3><p>Reflect on the week and celebrate completion.</p></article>
+    </div>
+    <div class="footer"><span>Day 5 · Capstone Schedule</span><span>Summer Camp · AI Foundations</span></div>
+    <aside class="notes">[Sources]
+- Schedule supplied directly by the course instructor.
+- Two assistants share their experiences from 10:00–10:30, fifteen minutes each.
+- Student presentations run from 3:00–4:20; summary and certificates run from 4:20–4:30.</aside>
+  </section>
+
+  <section class="slide success" data-label="08 What success looks like">
+    <div class="eyebrow">What success looks like</div><div class="page">08 / 08</div>
+    <div class="success-copy"><div class="kicker">Clarity · evidence · judgment</div><h2>Make every choice earn its place.</h2><p>A strong project is clear, grounded, and intentionally directed—not simply full of AI-generated content.</p></div>
+    <div class="standards">
+      <article class="standard"><div class="n">01</div><h3>Ground the story</h3><p>Important claims connect to reliable evidence.</p></article>
+      <article class="standard"><div class="n">02</div><h3>Integrate the media</h3><p>Images, video, and audio work together to strengthen understanding.</p></article>
+      <article class="standard"><div class="n">03</div><h3>Show judgment</h3><p>Verify, revise, and explain your creative decisions.</p></article>
+    </div>
+    <div class="final-line">One question your audience can answer clearly.</div>
+    <div class="footer"><span>Day 5 · Multimodal Knowledge Director</span><span>Begin with curiosity</span></div>
+    <aside class="notes">[Sources]
+- Success criteria synthesized from the instructor-approved capstone design and course responsible-use framing.</aside>
+  </section>
+
+</deck-stage>
+</body>
+</html>
